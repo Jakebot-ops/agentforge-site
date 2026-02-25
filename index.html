@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentForge — Complete AI Agent Infrastructure</title>
+  <meta name="description" content="One command. Complete AI agent infrastructure. Memory, health monitoring, dev pipeline, and dashboard — ready in minutes." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#58a6ff',
+            surface: '#161b22',
+            border: '#30363d',
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glow {
+      box-shadow: 0 0 40px rgba(88, 166, 255, 0.15);
+    }
+    .terminal {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#0d1117] text-[#e6edf3] min-h-screen">
+
+  <!-- Nav -->
+  <nav class="border-b border-[#30363d] px-6 py-4">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">⚒️</span>
+        <span class="font-semibold text-lg">AgentForge</span>
+        <span class="text-xs text-[#8b949e] ml-1">by Jakebot Labs</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/Jakebot-ops" class="text-[#8b949e] hover:text-[#e6edf3] text-sm transition-colors">GitHub</a>
+        <a href="https://github.com/sponsors/Jakebot-ops" class="text-[#8b949e] hover:text-[#e6edf3] text-sm transition-colors">Sponsors</a>
+        <a href="https://github.com/Jakebot-ops/agentforge-site" class="bg-[#58a6ff] text-[#0d1117] px-4 py-1.5 rounded-md text-sm font-medium hover:bg-[#79c0ff] transition-colors">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
+    <div class="inline-flex items-center gap-2 bg-[#161b22] border border-[#30363d] rounded-full px-4 py-1.5 text-sm text-[#8b949e] mb-8">
+      <span class="w-2 h-2 bg-[#3fb950] rounded-full animate-pulse"></span>
+      Open source · MIT License · Free to self-host
+    </div>
+
+    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+      Everything your AI agent needs<br>
+      <span class="gradient-text">to build, remember, and survive production.</span>
+    </h1>
+
+    <p class="text-xl text-[#8b949e] mb-10 max-w-2xl mx-auto">
+      One command deploys complete AI agent infrastructure — persistent memory, 
+      health monitoring, dev pipeline, and a live dashboard. Works with OpenClaw, 
+      LangChain, or any agent framework.
+    </p>
+
+    <div class="terminal p-5 text-left max-w-lg mx-auto mb-10 glow">
+      <div class="flex gap-2 mb-3">
+        <span class="w-3 h-3 rounded-full bg-[#f85149]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#d29922]"></span>
+        <span class="w-3 h-3 rounded-full bg-[#3fb950]"></span>
+      </div>
+      <p class="text-[#8b949e] text-sm mb-1"># Install AgentForge</p>
+      <p class="text-[#e6edf3] text-sm">$ <span class="text-[#79c0ff]">pip install agentforge</span></p>
+      <br>
+      <p class="text-[#8b949e] text-sm mb-1"># Initialize your agent environment</p>
+      <p class="text-[#e6edf3] text-sm">$ <span class="text-[#79c0ff]">agentforge init</span></p>
+      <p class="text-[#3fb950] text-sm">✓ Memory layer configured</p>
+      <p class="text-[#3fb950] text-sm">✓ Health monitoring active</p>
+      <p class="text-[#3fb950] text-sm">✓ Dashboard running at localhost:7842</p>
+      <br>
+      <p class="text-[#8b949e] text-sm">Ready in 47 seconds.</p>
+    </div>
+
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="https://github.com/Jakebot-ops/agentforge-site" 
+         class="bg-[#58a6ff] text-[#0d1117] px-8 py-3 rounded-lg font-semibold hover:bg-[#79c0ff] transition-colors">
+        Get Started Free →
+      </a>
+      <a href="https://github.com/sponsors/Jakebot-ops"
+         class="border border-[#30363d] text-[#e6edf3] px-8 py-3 rounded-lg font-semibold hover:border-[#58a6ff] transition-colors">
+        ♥ Sponsor
+      </a>
+    </div>
+  </section>
+
+  <!-- What's in the box -->
+  <section class="max-w-5xl mx-auto px-6 py-20 border-t border-[#30363d]">
+    <h2 class="text-3xl font-bold text-center mb-4">The complete stack, ready to run</h2>
+    <p class="text-[#8b949e] text-center mb-14 max-w-xl mx-auto">
+      Stop stitching together tools. AgentForge ships four production-hardened layers 
+      as a single deployable unit.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 hover:border-[#58a6ff] transition-colors">
+        <div class="text-2xl mb-3">🧠</div>
+        <h3 class="font-semibold text-lg mb-2">Persistent Memory</h3>
+        <p class="text-[#8b949e] text-sm leading-relaxed">
+          Three-layer architecture: Markdown files + ChromaDB vector search + NetworkX knowledge graph. 
+          Your agent remembers decisions, context, and institutional knowledge across every session.
+        </p>
+        <div class="mt-4 text-xs text-[#58a6ff] font-mono">persistent-memory · 31 GitHub stars</div>
+      </div>
+
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 hover:border-[#58a6ff] transition-colors">
+        <div class="text-2xl mb-3">🩺</div>
+        <h3 class="font-semibold text-lg mb-2">Health Monitoring</h3>
+        <p class="text-[#8b949e] text-sm leading-relaxed">
+          Real-time detection of context bloat, model failures, and service degradation. 
+          Auto-heals what it can. Alerts you when it can't. Runs autonomously every 30 minutes.
+        </p>
+        <div class="mt-4 text-xs text-[#58a6ff] font-mono">agent-healthkit · production hardened</div>
+      </div>
+
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 hover:border-[#58a6ff] transition-colors">
+        <div class="text-2xl mb-3">⚙️</div>
+        <h3 class="font-semibold text-lg mb-2">Dev Pipeline</h3>
+        <p class="text-[#8b949e] text-sm leading-relaxed">
+          Specialized agent roles with isolated memory and model routing. CodeBot writes and commits. 
+          OpusBot reviews architecture. Orchestrator handles fallback and retry automatically.
+        </p>
+        <div class="mt-4 text-xs text-[#58a6ff] font-mono">CodeBot + OpusBot + Orchestrator</div>
+      </div>
+
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 hover:border-[#58a6ff] transition-colors">
+        <div class="text-2xl mb-3">📊</div>
+        <h3 class="font-semibold text-lg mb-2">Live Dashboard</h3>
+        <p class="text-[#8b949e] text-sm leading-relaxed">
+          Web UI to search and manage agent memory, monitor health in real-time, 
+          browse and delete vector chunks, and trigger re-indexing — all from one browser tab.
+        </p>
+        <div class="mt-4 text-xs text-[#58a6ff] font-mono">FastAPI + Preact · localhost:7842</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="max-w-5xl mx-auto px-6 py-20 border-t border-[#30363d]">
+    <h2 class="text-3xl font-bold text-center mb-4">Simple pricing</h2>
+    <p class="text-[#8b949e] text-center mb-14">The core is free forever. Pay when you scale.</p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Community -->
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
+        <div class="text-sm text-[#8b949e] font-medium mb-2">COMMUNITY</div>
+        <div class="text-4xl font-bold mb-1">Free</div>
+        <div class="text-[#8b949e] text-sm mb-6">MIT License · Forever</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Full stack — all four layers</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Self-hosted</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Single user</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> OpenClaw + Docker</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Community support</li>
+        </ul>
+        <a href="https://github.com/Jakebot-ops/agentforge-site" 
+           class="block text-center border border-[#30363d] text-[#e6edf3] px-4 py-2.5 rounded-lg text-sm font-medium hover:border-[#58a6ff] transition-colors">
+          Get Started
+        </a>
+      </div>
+
+      <!-- Pro -->
+      <div class="bg-[#161b22] border border-[#58a6ff] rounded-xl p-6 relative glow">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#58a6ff] text-[#0d1117] text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>
+        <div class="text-sm text-[#58a6ff] font-medium mb-2">PRO</div>
+        <div class="text-4xl font-bold mb-1">$29<span class="text-lg font-normal text-[#8b949e]">/mo</span></div>
+        <div class="text-[#8b949e] text-sm mb-6">Cancel anytime</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Everything in Community</li>
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Multi-agent support</li>
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Hosted dashboard</li>
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Cloud memory backup</li>
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Priority updates</li>
+          <li class="flex gap-2"><span class="text-[#58a6ff]">✓</span> Email support</li>
+        </ul>
+        <a href="https://github.com/sponsors/Jakebot-ops"
+           class="block text-center bg-[#58a6ff] text-[#0d1117] px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#79c0ff] transition-colors">
+          Start via GitHub Sponsors
+        </a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
+        <div class="text-sm text-[#8b949e] font-medium mb-2">ENTERPRISE</div>
+        <div class="text-4xl font-bold mb-1">Custom</div>
+        <div class="text-[#8b949e] text-sm mb-6">Volume pricing available</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Everything in Pro</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> On-prem deployment</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> SSO + audit logs</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> SLA guarantee</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> White-label option</li>
+          <li class="flex gap-2"><span class="text-[#3fb950]">✓</span> Custom adapters</li>
+        </ul>
+        <a href="mailto:jakebot2ops@gmail.com"
+           class="block text-center border border-[#30363d] text-[#e6edf3] px-4 py-2.5 rounded-lg text-sm font-medium hover:border-[#58a6ff] transition-colors">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#30363d] px-6 py-10 mt-10">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-2 text-[#8b949e] text-sm">
+        <span>⚒️</span>
+        <span>AgentForge by Jakebot Labs · MIT License</span>
+      </div>
+      <div class="flex gap-6 text-sm text-[#8b949e]">
+        <a href="https://github.com/Jakebot-ops" class="hover:text-[#e6edf3] transition-colors">GitHub</a>
+        <a href="https://github.com/sponsors/Jakebot-ops" class="hover:text-[#e6edf3] transition-colors">Sponsors</a>
+        <a href="https://github.com/Jakebot-ops/agent-memory-guide" class="hover:text-[#e6edf3] transition-colors">Memory Guide</a>
+        <a href="mailto:jakebot2ops@gmail.com" class="hover:text-[#e6edf3] transition-colors">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
