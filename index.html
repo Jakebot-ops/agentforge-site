@@ -3,406 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgentForge — One command. Working AI agent.</title>
-  <meta name="description" content="Complete AI agent infrastructure in one command. Installs base platform + persistent memory (ChromaDB + NetworkX) + health monitoring. 5-10 min on a fresh system. v0.1.0 live now." />
-  <meta name="keywords" content="AI agent, autonomous agent, persistent memory, agent infrastructure, OpenClaw, LangChain, ChromaDB" />
+  <title>AgentForge — Open Source AI Agent Infrastructure</title>
+  <meta name="description" content="Open source infrastructure for AI agents. Persistent memory, health monitoring, and agent communication tools. Free, MIT licensed." />
   <link rel="canonical" href="https://agentsforge.dev" />
-
-  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://agentsforge.dev" />
-  <meta property="og:title" content="AgentForge — One command. Working AI agent." />
-  <meta property="og:description" content="Complete AI agent infrastructure in one command. Persistent memory, health monitoring, and a live dashboard. Free, open-source, MIT." />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="AgentForge — One command. Working AI agent." />
-  <meta name="twitter:description" content="curl -fsSL https://agentsforge.dev/install.sh | bash → your bot is running." />
-
+  <meta property="og:title" content="AgentForge — Open Source AI Agent Infrastructure" />
+  <meta property="og:description" content="Persistent memory, health monitoring, and agent communication tools. Free, MIT licensed." />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand:   '#58a6ff',
-            green:   '#3fb950',
-            surface: '#161b22',
-            border:  '#30363d',
-            muted:   '#8b949e',
-          },
-          fontFamily: {
-            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
-          },
-          animation: {
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
-    .gradient-text {
-      background: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .glow { box-shadow: 0 0 60px rgba(88, 166, 255, 0.12); }
-    .glow-green { box-shadow: 0 0 40px rgba(63, 185, 80, 0.10); }
-    .terminal {
-      background: #010409;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .terminal-bar {
-      background: #161b22;
-      border-bottom: 1px solid #30363d;
-      border-radius: 10px 10px 0 0;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .dot { width: 12px; height: 12px; border-radius: 50%; }
-    .copy-btn { transition: all 0.15s; }
-    .copy-btn:hover { transform: translateY(-1px); }
-    code { font-family: 'JetBrains Mono', monospace; }
+    .gradient-text { background: linear-gradient(135deg, #58a6ff 0%, #3fb950 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; }
     .card:hover { border-color: #58a6ff40; transition: border-color 0.2s; }
-    .step-line { background: linear-gradient(to bottom, #30363d, transparent); width: 1px; }
+    code { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#e6edf3] min-h-screen">
 
-  <!-- Nav -->
   <nav class="border-b border-[#30363d] px-6 py-4 sticky top-0 z-50 bg-[#0d1117]/90 backdrop-blur">
     <div class="max-w-5xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="text-xl">🦞</span>
         <span class="font-bold text-lg tracking-tight">AgentForge</span>
-        <span class="hidden sm:inline text-xs bg-[#161b22] border border-[#30363d] text-[#8b949e] px-2 py-0.5 rounded-full ml-1">v0.1.0</span>
       </div>
-      <div class="flex items-center gap-4 sm:gap-6">
-        <a href="https://github.com/JakebotLabs/agentforge" target="_blank" class="text-[#8b949e] hover:text-[#e6edf3] text-sm transition-colors flex items-center gap-1.5">
+      <div class="flex items-center gap-4 sm:gap-6 text-sm">
+        <a href="https://github.com/JakebotLabs" target="_blank" class="text-[#8b949e] hover:text-[#e6edf3] transition-colors flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
-        <a href="https://github.com/sponsors/JakebotLabs" target="_blank" class="hidden sm:inline text-[#8b949e] hover:text-[#e6edf3] text-sm transition-colors">Sponsor</a>
-        <a href="#install" class="bg-[#58a6ff] text-[#0d1117] px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-[#79c0ff] transition-colors">Install Free</a>
+        <a href="https://github.com/JakebotLabs/agent-memory-guide" target="_blank" class="text-[#8b949e] hover:text-[#e6edf3] transition-colors">Guides</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
-    <div class="inline-flex items-center gap-2 bg-[#161b22] border border-[#3fb950]/40 rounded-full px-4 py-1.5 text-sm text-[#3fb950] mb-8">
-      <span class="w-2 h-2 bg-[#3fb950] rounded-full animate-pulse-slow"></span>
-      v0.1.0 live · pip install agentsforge · MIT License
+  <section class="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 bg-[#161b22] border border-[#30363d] rounded-full px-4 py-1.5 text-sm text-[#8b949e] mb-8">
+      <span class="w-2 h-2 bg-[#3fb950] rounded-full"></span>
+      Open Source &nbsp;·&nbsp; MIT License &nbsp;·&nbsp; v0.1.0
     </div>
-
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
-      One command.<br>
-      <span class="gradient-text">Working AI agent.</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight tracking-tight">
+      Open source infrastructure<br><span class="gradient-text">for AI agents.</span>
     </h1>
-
-    <p class="text-lg sm:text-xl text-[#8b949e] mb-12 max-w-2xl mx-auto leading-relaxed">
-      Installs everything your agent needs: base platform + persistent memory (ChromaDB + NetworkX) +
-      health monitoring — in 5-10 minutes on a fresh system. Dashboard is optional (may require repo access).
+    <p class="text-lg text-[#8b949e] mb-10 max-w-2xl mx-auto leading-relaxed">
+      Practical, working tools for building agents that remember, stay healthy, and communicate.
+      No vendor lock-in. No magic. Open source components you can understand and control.
     </p>
-
-    <!-- Install command -->
-    <div id="install" class="max-w-2xl mx-auto mb-6">
-      <div class="terminal glow">
-        <div class="terminal-bar">
-          <div class="dot bg-[#ff5f57]"></div>
-          <div class="dot bg-[#febc2e]"></div>
-          <div class="dot bg-[#28c840]"></div>
-          <span class="text-[#8b949e] text-xs ml-2 font-mono">bash</span>
-          <button onclick="copyInstall()" class="copy-btn ml-auto text-[#8b949e] hover:text-[#58a6ff] text-xs font-mono flex items-center gap-1" id="copy-btn">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            copy
-          </button>
-        </div>
-        <div class="p-5 text-left">
-          <span class="text-[#3fb950]">$</span>
-          <span id="install-cmd" class="text-[#e6edf3] ml-2 text-sm sm:text-base font-mono">curl -fsSL https://agentsforge.dev/install.sh | bash</span>
-        </div>
-      </div>
-    </div>
-
-    <p class="text-sm text-[#8b949e] mb-10">Works on Ubuntu · macOS · Debian · WSL2 &nbsp;·&nbsp; No prerequisites needed</p>
-
-    <div class="flex flex-wrap justify-center gap-4 text-sm text-[#8b949e]">
-      <a href="https://github.com/JakebotLabs/agentforge" target="_blank" class="hover:text-[#58a6ff] transition-colors">⭐ Star on GitHub</a>
-      <span>·</span>
-      <a href="https://pypi.org/project/agentsforge/" target="_blank" class="hover:text-[#58a6ff] transition-colors">🐍 PyPI</a>
-      <span>·</span>
-      <a href="https://www.npmjs.com/package/@agentsforge/healthkit" target="_blank" class="hover:text-[#58a6ff] transition-colors">📦 npm</a>
-      <span>·</span>
-      <a href="docs/install.html" class="hover:text-[#58a6ff] transition-colors">📖 Docs</a>
+    <div class="flex flex-wrap justify-center gap-4 text-sm">
+      <a href="https://github.com/JakebotLabs" target="_blank" class="flex items-center gap-2 bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff] px-5 py-2.5 rounded-lg font-medium transition-colors">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a href="https://github.com/JakebotLabs/agent-memory-guide" target="_blank" class="flex items-center gap-2 bg-[#58a6ff] text-[#0d1117] hover:bg-[#79c0ff] px-5 py-2.5 rounded-lg font-semibold transition-colors">
+        📖 Read the Memory Guide
+      </a>
     </div>
   </section>
 
-  <!-- What happens during install -->
-  <section class="max-w-3xl mx-auto px-6 pb-20">
-    <h2 class="text-center text-xl font-semibold text-[#8b949e] mb-10">What happens when you run it</h2>
-    <div class="space-y-0">
+  <section class="max-w-5xl mx-auto px-6 pb-20">
+    <h2 class="text-xl font-semibold text-[#8b949e] text-center mb-10">Projects</h2>
+    <div class="grid sm:grid-cols-2 gap-5">
 
-      <div class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <div class="w-8 h-8 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-sm font-mono text-[#58a6ff] flex-shrink-0">1</div>
-          <div class="step-line flex-1 my-1"></div>
+      <div class="card p-6">
+        <div class="flex items-start justify-between mb-3">
+          <div class="text-2xl">🧠</div>
+          <span class="text-xs bg-[#3fb950]/10 border border-[#3fb950]/30 text-[#3fb950] px-2 py-0.5 rounded-full">Stable</span>
         </div>
-        <div class="pb-8">
-          <p class="font-medium text-[#e6edf3] mb-1">Auto-installs prerequisites</p>
-          <p class="text-sm text-[#8b949e]">git, Python 3.12, Node.js 20 — silently, with <code class="text-[#58a6ff]">apt-get</code>. You don't lift a finger.</p>
+        <h3 class="font-semibold text-lg mb-2">agent-memory-core</h3>
+        <p class="text-sm text-[#8b949e] leading-relaxed mb-4">Three-layer persistent memory for AI agents. Markdown for human-readable storage, ChromaDB for semantic vector search, NetworkX for relationship graphs. Agents remember across sessions.</p>
+        <div class="flex gap-3 text-xs mb-3">
+          <a href="https://github.com/JakebotLabs/agent-memory-core" target="_blank" class="text-[#58a6ff] hover:underline">GitHub →</a>
+          <a href="https://pypi.org/project/agentsforge/" target="_blank" class="text-[#8b949e] hover:text-[#58a6ff]">PyPI</a>
+        </div>
+        <code class="block bg-[#0d1117] rounded px-3 py-2 text-xs text-[#8b949e]">pip install agent-memory-core</code>
+      </div>
+
+      <div class="card p-6">
+        <div class="flex items-start justify-between mb-3">
+          <div class="text-2xl">🩺</div>
+          <span class="text-xs bg-[#3fb950]/10 border border-[#3fb950]/30 text-[#3fb950] px-2 py-0.5 rounded-full">Stable</span>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">agent-healthkit</h3>
+        <p class="text-sm text-[#8b949e] leading-relaxed mb-4">Health monitoring for AI agents. Detects context bloat, model failures, memory drift, and resource exhaustion. Async metrics collection, configurable thresholds, Telegram alerts.</p>
+        <div class="flex gap-3 text-xs mb-3">
+          <a href="https://github.com/JakebotLabs/agent-healthkit" target="_blank" class="text-[#58a6ff] hover:underline">GitHub →</a>
+          <a href="https://www.npmjs.com/package/@agentsforge/healthkit" target="_blank" class="text-[#8b949e] hover:text-[#58a6ff]">npm</a>
+        </div>
+        <code class="block bg-[#0d1117] rounded px-3 py-2 text-xs text-[#8b949e]">pip install agent-healthkit</code>
+      </div>
+
+      <div class="card p-6">
+        <div class="flex items-start justify-between mb-3">
+          <div class="text-2xl">📬</div>
+          <span class="text-xs bg-[#58a6ff]/10 border border-[#58a6ff]/30 text-[#58a6ff] px-2 py-0.5 rounded-full">Beta</span>
+        </div>
+        <h3 class="font-semibold text-lg mb-2">agent-mailbox</h3>
+        <p class="text-sm text-[#8b949e] leading-relaxed mb-4">Git-based async communication between AI agents. Each agent gets an inbox and sent folder. Agents read before they write. Auditable, no message broker required.</p>
+        <div class="flex gap-3 text-xs">
+          <a href="https://github.com/JakebotLabs/agent-mailbox" target="_blank" class="text-[#58a6ff] hover:underline">GitHub →</a>
         </div>
       </div>
 
-      <div class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <div class="w-8 h-8 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-sm font-mono text-[#58a6ff] flex-shrink-0">2</div>
-          <div class="step-line flex-1 my-1"></div>
+      <div class="card p-6">
+        <div class="flex items-start justify-between mb-3">
+          <div class="text-2xl">📖</div>
+          <span class="text-xs bg-[#58a6ff]/10 border border-[#58a6ff]/30 text-[#58a6ff] px-2 py-0.5 rounded-full">Guide</span>
         </div>
-        <div class="pb-8">
-          <p class="font-medium text-[#e6edf3] mb-1">Detects or installs a bot platform</p>
-          <p class="text-sm text-[#8b949e]">Checks for <a href="https://openclaw.dev" target="_blank" class="text-[#58a6ff] hover:underline">OpenClaw</a> (recommended — free, open-source). If missing, asks to install it for you.</p>
-        </div>
-      </div>
-
-      <div class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <div class="w-8 h-8 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-sm font-mono text-[#58a6ff] flex-shrink-0">3</div>
-          <div class="step-line flex-1 my-1"></div>
-        </div>
-        <div class="pb-8">
-          <p class="font-medium text-[#e6edf3] mb-1">You pick your AI model</p>
-          <p class="text-sm text-[#8b949e]">Interactive wizard: choose Anthropic, OpenAI, Groq (free tier), xAI, or Ollama (local). Enter your API key once — done.</p>
-        </div>
-      </div>
-
-      <div class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <div class="w-8 h-8 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-sm font-mono text-[#58a6ff] flex-shrink-0">4</div>
-          <div class="step-line flex-1 my-1"></div>
-        </div>
-        <div class="pb-8">
-          <p class="font-medium text-[#e6edf3] mb-1">AgentForge initializes and starts</p>
-          <p class="text-sm text-[#8b949e]">Memory layer installed (ChromaDB + NetworkX), health monitoring activated. Dashboard optional — requires private repo access or local clone.</p>
-        </div>
-      </div>
-
-      <div class="flex gap-4">
-        <div class="flex flex-col items-center">
-          <div class="w-8 h-8 rounded-full bg-[#3fb950]/20 border border-[#3fb950] flex items-center justify-center flex-shrink-0">✅</div>
-        </div>
-        <div class="pb-2">
-          <p class="font-medium text-[#3fb950] mb-1">Your bot is running</p>
-          <p class="text-sm text-[#8b949e]">Test it: <code class="text-[#58a6ff]">openclaw chat</code> &nbsp;·&nbsp; Dashboard: <code class="text-[#58a6ff]">agentforge status</code></p>
+        <h3 class="font-semibold text-lg mb-2">agent-memory-guide</h3>
+        <p class="text-sm text-[#8b949e] leading-relaxed mb-4">Practical guide to building memory systems for AI agents. Architecture patterns, encoding strategies, constraint systems, and real-world lessons from running production agents.</p>
+        <div class="flex gap-3 text-xs">
+          <a href="https://github.com/JakebotLabs/agent-memory-guide" target="_blank" class="text-[#58a6ff] hover:underline">GitHub →</a>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- What you get -->
   <section class="border-t border-[#30363d] py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4">Everything in the box</h2>
-      <p class="text-center text-[#8b949e] mb-14">All free. All open-source. All MIT.</p>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        <div class="card p-6">
-          <div class="text-2xl mb-3">🧠</div>
-          <h3 class="font-semibold mb-2">Persistent Memory</h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">Three-layer architecture: Markdown files → ChromaDB vector search → NetworkX knowledge graph. Your agent remembers everything, forever.</p>
-          <a href="https://github.com/JakebotLabs/agent-memory-core" target="_blank" class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">agent-memory-core →</a>
-        </div>
-
-        <div class="card p-6">
-          <div class="text-2xl mb-3">🩺</div>
-          <h3 class="font-semibold mb-2">Health Monitoring</h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">Async metrics collection, context bloat detection, soul drift scoring, auto-healing with backup/rollback, Telegram alerts. Runs every 15 minutes.</p>
-          <a href="https://github.com/JakebotLabs/agent-healthkit" target="_blank" class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">agent-healthkit →</a>
-        </div>
-
-        <div class="card p-6">
-          <div class="text-2xl mb-3">📊</div>
-          <h3 class="font-semibold mb-2">Live Dashboard</h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">Web UI for memory browsing, health status, service management. See what your agent knows and how it's performing in real time.</p>
-          <a href="https://github.com/JakebotLabs/jakebot-dashboard" target="_blank" class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">jakebot-dashboard →</a>
-        </div>
-
-        <div class="card p-6">
-          <div class="text-2xl mb-3">📬</div>
-          <h3 class="font-semibold mb-2">Agent-to-Agent Mailbox</h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">Git-based async messaging between agents. Each agent has an inbox, sent folder, and shared knowledge base. "Listen before you speak" enforced in code.</p>
-          <a href="https://github.com/JakebotLabs/agent-mailbox" target="_blank" class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">agent-mailbox →</a>
-        </div>
-
-        <div class="card p-6">
-          <div class="text-2xl mb-3">🔧</div>
-          <h3 class="font-semibold mb-2">TypeScript Client</h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">NPM package for integrating HealthKit into any Node.js or TypeScript agent. Collectors, detectors, and healers as importable modules.</p>
-          <code class="inline-block mt-3 text-xs text-[#8b949e] bg-[#0d1117] px-2 py-1 rounded">npm i @agentsforge/healthkit</code>
-        </div>
-
-        <div class="card p-6 border-dashed border-[#58a6ff]/30">
-          <div class="text-2xl mb-3">⚙️</div>
-          <h3 class="font-semibold mb-2">Dev Pipeline <span class="text-xs text-[#58a6ff] font-normal ml-1">Pro</span></h3>
-          <p class="text-sm text-[#8b949e] leading-relaxed">CodeBot + OpusBot: autonomous coding agents that review, test, and ship code overnight. Parallel sub-agent orchestration with LangGraph.</p>
-          <a href="https://github.com/sponsors/JakebotLabs" target="_blank" class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">Unlock via GitHub Sponsors →</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats bar -->
-  <section class="border-t border-b border-[#30363d] py-12">
-    <div class="max-w-4xl mx-auto px-6">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-        <div>
-          <div class="text-3xl font-bold gradient-text mb-1">249</div>
-          <div class="text-sm text-[#8b949e]">Tests shipped</div>
-        </div>
-        <div>
-          <div class="text-3xl font-bold gradient-text mb-1">9</div>
-          <div class="text-sm text-[#8b949e]">PRs merged tonight</div>
-        </div>
-        <div>
-          <div class="text-3xl font-bold gradient-text mb-1">32★</div>
-          <div class="text-sm text-[#8b949e]">agent-memory-guide</div>
-        </div>
-        <div>
-          <div class="text-3xl font-bold gradient-text mb-1">MIT</div>
-          <div class="text-sm text-[#8b949e]">Free forever</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Platform support -->
-  <section class="py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-2xl sm:text-3xl font-bold text-center mb-4">Works with your stack</h2>
-      <p class="text-center text-[#8b949e] mb-14">Bring your own agent. We handle the infrastructure.</p>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="card p-5 text-center">
-          <div class="text-3xl mb-2">🦞</div>
-          <div class="font-semibold mb-1">OpenClaw</div>
-          <div class="text-xs text-[#3fb950]">Recommended</div>
-          <div class="text-xs text-[#8b949e] mt-2">Auto-detected. Full stack support. Free.</div>
-        </div>
-        <div class="card p-5 text-center">
-          <div class="text-3xl mb-2">🦜</div>
-          <div class="font-semibold mb-1">LangChain</div>
-          <div class="text-xs text-[#8b949e]">Coming soon</div>
-          <div class="text-xs text-[#8b949e] mt-2">Platform adapter in progress.</div>
-        </div>
-        <div class="card p-5 text-center">
-          <div class="text-3xl mb-2">🤖</div>
-          <div class="font-semibold mb-1">AutoGen</div>
-          <div class="text-xs text-[#8b949e]">Coming soon</div>
-          <div class="text-xs text-[#8b949e] mt-2">Multi-agent orchestration support.</div>
-        </div>
-        <div class="card p-5 text-center">
-          <div class="text-3xl mb-2">🐍</div>
-          <div class="font-semibold mb-1">Standalone</div>
-          <div class="text-xs text-[#8b949e]">Available</div>
-          <div class="text-xs text-[#8b949e] mt-2">Raw Python. No framework required.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="border-t border-[#30363d] py-24">
     <div class="max-w-3xl mx-auto px-6 text-center">
-      <div class="text-4xl mb-4">🦞</div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight">
-        The lobsters are at the gates.
-      </h2>
-      <p class="text-[#8b949e] text-lg mb-10">One command. Your agent is running. No PhD required.</p>
-
-      <div class="terminal glow max-w-xl mx-auto mb-8">
-        <div class="terminal-bar">
-          <div class="dot bg-[#ff5f57]"></div>
-          <div class="dot bg-[#febc2e]"></div>
-          <div class="dot bg-[#28c840]"></div>
-          <button onclick="copyInstall2()" class="copy-btn ml-auto text-[#8b949e] hover:text-[#58a6ff] text-xs font-mono flex items-center gap-1" id="copy-btn-2">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            copy
-          </button>
-        </div>
-        <div class="p-5 text-left">
-          <span class="text-[#3fb950]">$</span>
-          <span class="text-[#e6edf3] ml-2 text-sm font-mono">curl -fsSL https://agentsforge.dev/install.sh | bash</span>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="https://github.com/JakebotLabs/agentforge" target="_blank"
-           class="flex items-center gap-2 bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff] text-[#e6edf3] px-6 py-3 rounded-lg font-medium transition-colors">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          View on GitHub
-        </a>
-        <a href="https://github.com/sponsors/JakebotLabs" target="_blank"
-           class="flex items-center gap-2 bg-[#58a6ff] text-[#0d1117] hover:bg-[#79c0ff] px-6 py-3 rounded-lg font-semibold transition-colors">
-          ♥ Sponsor the Project
-        </a>
+      <h2 class="text-2xl font-bold mb-6">Why this exists</h2>
+      <div class="text-[#8b949e] leading-relaxed space-y-4 text-left">
+        <p>AI agents need infrastructure that actually works — memory that persists, monitoring that catches real problems, communication that doesn't require a cloud service. These tools were built to solve those problems practically.</p>
+        <p>Everything here is MIT licensed and works without vendor accounts, subscriptions, or services you don't control. The goal is stable, understandable open source tools you can run, inspect, and modify yourself.</p>
+        <p>These tools run in production. They have edge cases. When something doesn't work, it gets fixed and documented honestly.</p>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="border-t border-[#30363d] py-10 text-center text-sm text-[#8b949e]">
     <div class="max-w-5xl mx-auto px-6">
       <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6">
         <a href="https://github.com/JakebotLabs" target="_blank" class="hover:text-[#e6edf3] transition-colors">GitHub</a>
-        <a href="https://github.com/JakebotLabs/agentforge/blob/main/docs/install.md" target="_blank" class="hover:text-[#e6edf3] transition-colors">Docs</a>
         <a href="https://github.com/JakebotLabs/agent-memory-guide" target="_blank" class="hover:text-[#e6edf3] transition-colors">Memory Guide</a>
         <a href="https://pypi.org/project/agentsforge/" target="_blank" class="hover:text-[#e6edf3] transition-colors">PyPI</a>
         <a href="https://www.npmjs.com/package/@agentsforge/healthkit" target="_blank" class="hover:text-[#e6edf3] transition-colors">npm</a>
         <a href="privacy.html" class="hover:text-[#e6edf3] transition-colors">Privacy</a>
-        <a href="terms.html" class="hover:text-[#e6edf3] transition-colors">Terms</a>
       </div>
-      <p>Built by <a href="https://github.com/JakebotLabs" target="_blank" class="text-[#58a6ff] hover:underline">Jakebot Labs</a> · MIT License · <span class="text-[#3fb950]">v0.1.0</span></p>
+      <p>Built by <a href="https://github.com/JakebotLabs" target="_blank" class="text-[#58a6ff] hover:underline">Jakebot Labs</a> · MIT License</p>
       <p class="mt-1 text-xs">🦞 The lobsters are at the gates.</p>
     </div>
   </footer>
-
-  <script>
-    function copyInstall() {
-      const cmd = document.getElementById('install-cmd').textContent;
-      navigator.clipboard.writeText(cmd).then(() => {
-        const btn = document.getElementById('copy-btn');
-        btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> copied!`;
-        btn.classList.add('text-[#3fb950]');
-        setTimeout(() => {
-          btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> copy`;
-          btn.classList.remove('text-[#3fb950]');
-        }, 2000);
-      });
-    }
-    function copyInstall2() {
-      const cmd = 'curl -fsSL https://agentsforge.dev/install.sh | bash';
-      navigator.clipboard.writeText(cmd).then(() => {
-        const btn = document.getElementById('copy-btn-2');
-        btn.textContent = '✓ copied!';
-        btn.classList.add('text-[#3fb950]');
-        setTimeout(() => {
-          btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> copy`;
-          btn.classList.remove('text-[#3fb950]');
-        }, 2000);
-      });
-    }
-  </script>
 
 </body>
 </html>
