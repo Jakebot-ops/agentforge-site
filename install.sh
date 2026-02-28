@@ -376,31 +376,12 @@ fi
 "$AGENTFORGE_HOME/venv/bin/pip" install -q "$AGENTFORGE_HOME/repo"
 ok "Python environment ready"
 
-info "Installing memory layer (agent-memory-core) — this takes 5-15 minutes on first run..."
-# agent-memory-core bundles chromadb + sentence-transformers + networkx as deps
-"$AGENTFORGE_HOME/venv/bin/pip" install -q agent-memory-core 2>&1 | tail -1
+info "Installing memory layer (ChromaDB + NetworkX) — this takes 2-4 minutes on first run..."
+"$AGENTFORGE_HOME/venv/bin/pip" install -q chromadb sentence-transformers networkx 2>&1 | tail -1
 ok "Memory layer ready"
 
-# Initialize memory at the right workspace location.
-# MemoryManager(workspace) creates workspace/vector_memory/chroma_db — exactly what doctor checks.
-if [[ "$PLATFORM" == "openclaw" ]]; then
-    mkdir -p "$HOME/.openclaw/workspace"
-    WORKSPACE_DIR="$HOME/.openclaw/workspace"
-else
-    WORKSPACE_DIR="$AGENTFORGE_HOME/workspace"
-fi
-mkdir -p "$WORKSPACE_DIR"
-"$AGENTFORGE_HOME/venv/bin/python" -c "
-from agent_memory_core import MemoryManager
-mm = MemoryManager('$WORKSPACE_DIR')
-print('ChromaDB initialized at $WORKSPACE_DIR/vector_memory/chroma_db')
-" 2>/dev/null && ok "Memory initialized at $WORKSPACE_DIR/vector_memory" || warn "Memory init skipped — run: agentforge init"
-
 info "Installing health monitoring (agent-healthkit)..."
-# Install from GitHub (not yet on PyPI)
-"$AGENTFORGE_HOME/venv/bin/pip" install -q "git+https://github.com/JakebotLabs/agent-healthkit.git" 2>/dev/null \
-    && ok "HealthKit ready" \
-    || warn "HealthKit install failed — install manually after setup"
+"$AGENTFORGE_HOME/venv/bin/pip" install -q agent-healthkit 2>/dev/null && ok "HealthKit ready" || warn "HealthKit install failed — install manually: pip install agent-healthkit"
 
 DASHBOARD_DIR="$AGENTFORGE_HOME/dashboard"
 if [[ ! -d "$DASHBOARD_DIR" ]]; then
